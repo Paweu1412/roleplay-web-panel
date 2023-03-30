@@ -1,0 +1,107 @@
+@font-face {
+  font-family: "ui-thin";
+  font-style: normal;
+  font-weight: 100;
+  font-display: swap;
+  src: url("assets/fonts/font_thin.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "ui-extralight";
+  font-style: normal;
+  font-weight: 200;
+  font-display: swap;
+  src: url("assets/fonts/font_extralight.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "ui-light";
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url("assets/fonts/font_light.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "ui-regular";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("assets/fonts/font_regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "ui-medium";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("assets/fonts/font_medium.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "ui-semibold";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("assets/fonts/font_semibold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "ui-bold";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("assets/fonts/font_bold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "ui-extrabold";
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("assets/fonts/font_extrabold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "ui-black";
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src: url("assets/fonts/font_black.ttf") format("truetype");
+}
+
+// FIOLETOWY
+// :root {
+// 	--ui: rgba(35, 35, 40, 0.9);
+// 	--theme: #8069DA;
+// 	--theme-hover: #8F7AE1;
+// 	--themed-text: #fff;
+// }
+
+:root {
+  --ui: rgba(35, 35, 40, 0.9);
+  --ui-text: #9da4ae;
+  --theme: #ffab00;
+  --theme-hover: #ffb318;
+  --themed-text: #1c1121;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: whitesmoke;
+}
+
+.MuiFormLabel-root {
+  color: var(--ui-text) !important;
+}
+.MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
+  border-color: var(--theme) !important;
+}
+
+.MuiFormLabel-root.Mui-focused {
+  color: var(--theme-hover) !important;
+}
+.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: var(--theme-hover) !important;
+}
