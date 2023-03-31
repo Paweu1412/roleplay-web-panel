@@ -79,29 +79,32 @@
 // }
 
 :root {
-  --ui: rgba(35, 35, 40, 0.9);
+  --ui: rgba(35, 35, 40, 1);
   --ui-text: #9da4ae;
   --theme: #ffab00;
   --theme-hover: #ffb318;
   --themed-text: #1c1121;
+  --border: rgba(255, 255, 255, 0.08);
 }
 
 body {
+  background-color: var(--ui);
+  color: var(--ui-text);
   margin: 0;
   padding: 0;
-  background-color: whitesmoke;
 }
 
 .MuiFormLabel-root {
   color: var(--ui-text) !important;
 }
 .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
-  border-color: var(--theme) !important;
+  border-color: var(--border) !important;
+  border-width: 2px;
 }
 
 .MuiFormLabel-root.Mui-focused {
-  color: var(--theme-hover) !important;
+  color: var(--theme) !important;
 }
 .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
-  border-color: var(--theme-hover) !important;
+  border-color: var(--theme) !important;
 }

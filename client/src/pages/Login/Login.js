@@ -1,4 +1,10 @@
-import { TextField, Button } from "@mui/material";
+import {
+  TextField,
+  Button,
+  Checkbox,
+  FormControlLabel,
+  Link,
+} from "@mui/material";
 
 import "./Login.scss";
 
@@ -11,72 +17,104 @@ const getGlobalStyle = (variableName) => {
 const Login = () => {
   return (
     <div className="container">
-      <div className="window">
-        <div className="window__title">
-          <h1>Panel logowania</h1>
+      <div className="box">
+        <div className="box__header">
+          <h1>Zaloguj się</h1>
         </div>
 
-        <div className="window__body__form">
+        <div className="box__form">
           <TextField
-            id="outlined-basic"
-            label="Adres e-mail"
+            required
+            label="Nazwa użytkownika"
             variant="outlined"
+            style={{
+              width: "100%",
+              marginTop: "25px"
+            }}
             inputProps={{
               style: {
                 color: getGlobalStyle("--ui-text"),
-                fontFamily: "ui-regular",
-              },
-            }}
-            style={{
-              width: "70%",
+              }
             }}
           />
 
           <TextField
-            id="outlined-basic"
+            required
+            type="password"
             label="Hasło"
             variant="outlined"
+            style={{
+              width: "100%",
+              marginTop: "25px",
+            }}
             inputProps={{
               style: {
-                color: "#9DA4AE",
-                fontFamily: "ui-regular",
-              },
-            }}
-            style={{
-              width: "70%",
-              marginTop: "30px",
+                color: getGlobalStyle("--ui-text"),
+              }
             }}
           />
 
-          <div className="window__body__form__forgot-button">
-            <a href="127.0.0.1">Zapomniałem hasła</a>
+          <FormControlLabel
+            control={
+              <Checkbox 
+                value="remember"
+                sx={{
+                  color: getGlobalStyle("--ui-text"),
+
+                  '&.Mui-checked': {
+                    color: getGlobalStyle("--theme"),
+                  }
+                }}
+              />
+            }
+            label="Zapamiętaj mnie"
+            style={{
+              marginTop: "15px",
+              color: getGlobalStyle("--ui-text"),
+            }}
+          />
+
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            style={{
+              backgroundColor: getGlobalStyle("--theme"),
+              fontFamily: "ui-regular",
+              fontWeight: "600",
+              marginTop: "15px",
+              marginBottom: "15px",
+              color: getGlobalStyle("--ui")
+            }}
+          >
+            Zaloguj się
+          </Button>
+
+          <div className="box__form__links">
+            <Link href="#" 
+              variant="body2" 
+              style={{ 
+                fontFamily: "ui-regular",
+                fontWeight: "600",
+                color: getGlobalStyle("--ui-text"),
+                textDecoration: "none"
+              }}
+            >
+              Zapomniałeś hasła?
+            </Link>
+
+            <Link href="#" 
+              variant="body2" 
+              style={{ 
+                fontFamily: "ui-regular",
+                fontWeight: "600",
+                color: getGlobalStyle("--ui-text"),
+                textDecoration: "none"
+              }}
+            >
+              Nie masz konta?
+            </Link>
           </div>
-
-          <Button
-            variant="contained"
-            style={{
-              width: "70%",
-              marginTop: "50px",
-              backgroundColor: getGlobalStyle("--theme"),
-              fontFamily: "ui-bold",
-              color: getGlobalStyle("--themed-text"),
-            }}
-          >
-            Zaloguj
-          </Button>
-
-          <Button
-            variant="contained"
-            style={{
-              width: "70%",
-              marginTop: "20px",
-              backgroundColor: getGlobalStyle("--theme"),
-              fontFamily: "ui-bold",
-              color: getGlobalStyle("--themed-text"),
-            }}
-          >
-            Zarejestruj
-          </Button>
         </div>
       </div>
     </div>
