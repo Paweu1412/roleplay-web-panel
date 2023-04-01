@@ -7,6 +7,9 @@ dotenv.config();
 const livereload = require("livereload");
 const connectLiveReload = require("connect-livereload");
 const bodyParser = require("body-parser");
+const mysql = require("mysql2");
+
+const routes = require("./routes/app.routes");
 
 const liveReloadServer = livereload.createServer();
 liveReloadServer.server.once("connection", () => {
@@ -19,6 +22,7 @@ liveReloadServer.server.once("connection", () => {
 app.use(connectLiveReload());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use("/", routes);
 
 app.listen(5000);
 
