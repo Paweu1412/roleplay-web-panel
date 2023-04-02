@@ -17,29 +17,48 @@ exports.checkCredentials = (req, res) => {
   pool.query('SELECT * FROM accounts WHERE username = ?', [username], (error, results) => {
     if (error) {
       console.error(error);
-      res.status(500).send('Błąd serwera');
+
+      res.status(500).json({
+        status: 1,
+        message: 'Błąd serwera',
+      });
+
       return;
     }
 
     if (results.length === 0) {
-      res.status(401).send('Nieprawidłowy login lub hasło');
+      res.status(401).json({
+        status: 2,
+        message: 'Nieprawidłowy login',
+      });
+
       return;
     }
 
     const user = results[0];
     bcrypt.compare(password, user.password, (error, result) => {
       if (error) {
-        console.error(error);
-        res.status(500).send('Błąd serwera');
+        res.status(500).json({
+          status: 3,
+          message: 'Błąd serwera',
+        });
+        
         return;
       }
 
       if (!result) {
-        res.status(401).send('Nieprawidłowy login lub hasło');
+        res.status(401).json({
+          status: 4,
+          message: 'Nieprawidłowe hasło',
+        });
+
         return;
       }
 
-      res.status(200).send('Autoryzacja udana');
+      res.status(200).json({
+        status: 5,
+        message: 'Autoryzacja udana',
+      });
     });
   });
 }

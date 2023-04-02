@@ -8,11 +8,17 @@ import {
 
 import "./Login.scss";
 
-const getGlobalStyle = (variableName) => {
-  return getComputedStyle(document.documentElement).getPropertyValue(
-    variableName
-  );
-};
+import { getGlobalStyle } from "../../utils/index";
+import { AlertInfo } from "../../components/Alert/Alert";
+import axios from "axios";
+
+const submitLogin = () => {
+  // axios.get("http://localhost:5000/api/credentials", {
+  //   params: {
+      
+  //   }
+  // })
+}
 
 const Login = () => {
   return (
@@ -86,6 +92,7 @@ const Login = () => {
               marginBottom: "15px",
               color: getGlobalStyle("--ui")
             }}
+            onClick={submitLogin()}
           >
             Zaloguj się
           </Button>
