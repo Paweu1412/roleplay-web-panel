@@ -12,13 +12,15 @@ const pool = mysql.createPool({
 });
 
 exports.checkCredentials = (req, res) => {
-  const { username, password } = req.body;
+  res.set('Access-Control-Allow-Origin', '*');
+
+  const { username, password } = req.query;
 
   pool.query('SELECT * FROM accounts WHERE username = ?', [username], (error, results) => {
     if (error) {
       console.error(error);
 
-      res.status(500).json({
+      res.json({
         status: 1,
         message: 'Błąd serwera',
       });
@@ -27,7 +29,7 @@ exports.checkCredentials = (req, res) => {
     }
 
     if (results.length === 0) {
-      res.status(401).json({
+      res.json({
         status: 2,
         message: 'Nieprawidłowy login',
       });
@@ -38,7 +40,7 @@ exports.checkCredentials = (req, res) => {
     const user = results[0];
     bcrypt.compare(password, user.password, (error, result) => {
       if (error) {
-        res.status(500).json({
+        res.json({
           status: 3,
           message: 'Błąd serwera',
         });
@@ -47,7 +49,7 @@ exports.checkCredentials = (req, res) => {
       }
 
       if (!result) {
-        res.status(401).json({
+        res.json({
           status: 4,
           message: 'Nieprawidłowe hasło',
         });
@@ -55,7 +57,7 @@ exports.checkCredentials = (req, res) => {
         return;
       }
 
-      res.status(200).json({
+      res.json({
         status: 5,
         message: 'Autoryzacja udana',
       });

@@ -12,12 +12,21 @@ import { getGlobalStyle } from "../../utils/index";
 import { AlertInfo } from "../../components/Alert/Alert";
 import axios from "axios";
 
-const submitLogin = () => {
-  // axios.get("http://localhost:5000/api/credentials", {
-  //   params: {
-      
-  //   }
-  // })
+const SubmitLogin = async () => {
+  const responseStatuses = {
+    1: {message: "Błąd serwera", state: "error"},
+    2: {message: "Nieprawidłowy login", state: "error"},
+    3: {message: "Błąd serwera", state: "error"},
+    4: {message: "Nieprawidłowe hasło", state: "error"},
+    5: {message: "Zalogowano pomyślnie", state: "success"},
+  }
+
+  const response = await axios.get("http://127.0.0.1:5000/api/credentials", {
+    params: {
+      username: "Pawel",
+      password: "vibe2"
+    }
+  });
 }
 
 const Login = () => {
@@ -92,7 +101,7 @@ const Login = () => {
               marginBottom: "15px",
               color: getGlobalStyle("--ui")
             }}
-            onClick={submitLogin()}
+            // onClick={} // TODO: Check credentials and setShow the alert component if needed
           >
             Zaloguj się
           </Button>
