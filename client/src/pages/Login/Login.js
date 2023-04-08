@@ -11,27 +11,60 @@ import "./Login.scss";
 import { getGlobalStyle } from "../../utils/index";
 import { AlertInfo } from "../../components/Alert/Alert";
 import axios from "axios";
-
-const SubmitLogin = async () => {
-  const responseStatuses = {
-    1: {message: "Błąd serwera", state: "error"},
-    2: {message: "Nieprawidłowy login", state: "error"},
-    3: {message: "Błąd serwera", state: "error"},
-    4: {message: "Nieprawidłowe hasło", state: "error"},
-    5: {message: "Zalogowano pomyślnie", state: "success"},
-  }
-
-  const response = await axios.get("http://127.0.0.1:5000/api/credentials", {
-    params: {
-      username: "Pawel",
-      password: "vibe2"
-    }
-  });
-}
+import { useState } from "react";
+import { redirect } from "react-router-dom";
 
 const Login = () => {
+  const [alertInfo, setAlertInfo] = useState(null);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  const SubmitLogin = async () => {
+    const responseStatuses = {
+      1: { message: "Błąd serwera", state: "error" },
+      2: { message: "Nieprawidłowy login", state: "error" },
+      3: { message: "Błąd serwera", state: "error" },
+      4: { message: "Nieprawidłowe hasło", state: "error" },
+      5: { message: "Zalogowano pomyślnie", state: "success" },
+    };
+
+    if (username === "" || password === "") {
+      setAlertInfo(<AlertInfo state="warning" info="Wypełnij wszystkie pola" />);
+
+      setTimeout(() => {
+        setAlertInfo(null);
+      }, 5 * 1000);
+      
+      return;
+    }
+
+    const response = await axios.get(
+      "http://127.0.0.1:5000/api/credentials",
+      {
+        params: {
+          username: username,
+          password: password,
+        },
+      }
+    );
+
+    const info = responseStatuses[response.data.status];
+
+    if (info.state === "success") {
+      return window.location.href = "/key=123";
+    }
+
+    setAlertInfo(<AlertInfo state={info.state} info={info.message} />);
+
+    setTimeout(() => {
+      setAlertInfo(null);
+    }, 5 * 1000);
+  };
+
   return (
     <div className="container">
+      {alertInfo && <div className="container__alert">{alertInfo}</div>}
+
       <div className="box">
         <div className="box__header">
           <h1>Zaloguj się</h1>
@@ -42,14 +75,15 @@ const Login = () => {
             required
             label="Nazwa użytkownika"
             variant="outlined"
+            onChange={(e) => {setUsername(e.target.value)}}
             style={{
               width: "100%",
-              marginTop: "25px"
+              marginTop: "25px",
             }}
             inputProps={{
               style: {
                 color: getGlobalStyle("--ui-text"),
-              }
+              },
             }}
           />
 
@@ -58,6 +92,7 @@ const Login = () => {
             type="password"
             label="Hasło"
             variant="outlined"
+            onChange={(e) => {setPassword(e.target.value)}}
             style={{
               width: "100%",
               marginTop: "25px",
@@ -65,20 +100,20 @@ const Login = () => {
             inputProps={{
               style: {
                 color: getGlobalStyle("--ui-text"),
-              }
+              },
             }}
           />
 
           <FormControlLabel
             control={
-              <Checkbox 
+              <Checkbox
                 value="remember"
                 sx={{
                   color: getGlobalStyle("--ui-text"),
 
-                  '&.Mui-checked': {
+                  "&.Mui-checked": {
                     color: getGlobalStyle("--theme"),
-                  }
+                  },
                 }}
               />
             }
@@ -86,6 +121,7 @@ const Login = () => {
             style={{
               marginTop: "15px",
               color: getGlobalStyle("--ui-text"),
+              userSelect: "none"
             }}
           />
 
@@ -101,7 +137,7 @@ const Login = () => {
               marginBottom: "15px",
               color: getGlobalStyle("--ui")
             }}
-            // onClick={} // TODO: Check credentials and setShow the alert component if needed
+            onClick={SubmitLogin}
           >
             Zaloguj się
           </Button>
