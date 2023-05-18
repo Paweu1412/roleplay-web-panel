@@ -51,7 +51,9 @@ const Login = () => {
     const info = responseStatuses[response.data.status];
 
     if (info.state === "success") {
-      return window.location.href = "/key=123";
+      const key = response.data.key;
+
+      return window.location.href = `/key=${key}`;
     }
 
     setAlertInfo(<AlertInfo state={info.state} info={info.message} />);
@@ -75,6 +77,7 @@ const Login = () => {
             required
             label="Nazwa użytkownika"
             variant="outlined"
+            onPaste={(e) => {setUsername(e.target.value)}}
             onChange={(e) => {setUsername(e.target.value)}}
             style={{
               width: "100%",
@@ -92,6 +95,7 @@ const Login = () => {
             type="password"
             label="Hasło"
             variant="outlined"
+            onPaste={(e) => {setPassword(e.target.value)}}
             onChange={(e) => {setPassword(e.target.value)}}
             style={{
               width: "100%",

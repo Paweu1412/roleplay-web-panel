@@ -2,6 +2,7 @@ const { Request, Response } = require("express");
 
 const bcrypt = require("bcrypt");
 const mysql = require("mysql2");
+const { v4: uuidv4 } = require("uuid");
 
 const pool = mysql.createPool({
   host: process.env.DB_HOST,
@@ -15,6 +16,22 @@ exports.checkCredentials = (req, res) => {
   res.set('Access-Control-Allow-Origin', '*');
 
   const { username, password } = req.query;
+
+  let currentKeys = [];
+
+  const generateKey = (username) => {
+    const key = uuidv4();
+
+    currentKeys[username] = [key, Date.now()];
+
+    setTimeout(() => {
+      currentKeys[username] = null;
+    }, 120000);
+
+    console.log(currentKeys);
+
+    return key;
+  }
 
   pool.query('SELECT * FROM accounts WHERE username = ?', [username], (error, results) => {
     if (error) {
@@ -60,6 +77,7 @@ exports.checkCredentials = (req, res) => {
       res.json({
         status: 5,
         message: 'Autoryzacja udana',
+        key: generateKey(username),
       });
     });
   });
