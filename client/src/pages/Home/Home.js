@@ -1,6 +1,12 @@
 import "./Home.scss";
 
 // import { getGlobalStyle } from "../../utils/index";
+import SignalCellularAltRoundedIcon from '@mui/icons-material/SignalCellularAltRounded';
+import PeopleRoundedIcon from '@mui/icons-material/PeopleRounded';
+import LocalMallRoundedIcon from '@mui/icons-material/LocalMallRounded';
+import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
+
+import { ButtonBase } from "@mui/material";
 import { Spinner } from "../../components/Spinner/Spinner";
 import { useParams } from "react-router-dom";
 import { useState } from "react";
@@ -29,14 +35,52 @@ const Home = () => {
 	checkSession(key);
 
   return (
-    <div className="container">
+    <div className="home">
       <Spinner open={showSpinner} />
-			
-			<div className="container--left">
-				
+			 
+			<div className="sidebar">
+				<div className="sidebar__upper">
+					<div className="basic-info">
+						<h1>Cześć, Paweł!</h1>
+						<p>To jest testowy panel</p>
+					</div>
+				</div>
+
+				<div className="sidebar__main">
+					<ul className="buttons">
+						<li>
+							<ButtonBase className="button">
+								<SignalCellularAltRoundedIcon className="icon" />
+								<span className="description">Overview</span>
+							</ButtonBase>
+						</li>
+
+						<li>
+							<ButtonBase className="button">
+								<PeopleRoundedIcon className="icon" />
+								<span className="description">Customers</span>
+							</ButtonBase>
+						</li>
+
+						<li>
+							<ButtonBase className="button">
+								<LocalMallRoundedIcon className="icon" />
+								<span className="description">Companies</span>
+							</ButtonBase>
+						</li>
+
+						<li>
+							<ButtonBase className="button">
+								<PersonRoundedIcon className="icon" />
+								<span className="description">Account</span>
+							</ButtonBase>
+						</li>
+					</ul>
+				</div>
 			</div>
 
-			<div className="container--right">
+			<div className="main">
+
 			</div>
     </div>
   );
