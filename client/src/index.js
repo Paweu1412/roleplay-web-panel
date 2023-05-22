@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import './index.scss';
 
 import Login from './pages/Login/Login';
+import Home from './pages/Home/Home';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -13,6 +14,7 @@ root.render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Login />} />
+        <Route path="/dashboard/:key" element={<Home />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>

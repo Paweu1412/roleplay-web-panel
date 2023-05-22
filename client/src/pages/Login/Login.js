@@ -12,7 +12,6 @@ import { getGlobalStyle } from "../../utils/index";
 import { AlertInfo } from "../../components/Alert/Alert";
 import axios from "axios";
 import { useState } from "react";
-import { redirect } from "react-router-dom";
 
 const Login = () => {
   const [alertInfo, setAlertInfo] = useState(null);
@@ -26,6 +25,7 @@ const Login = () => {
       3: { message: "Błąd serwera", state: "error" },
       4: { message: "Nieprawidłowe hasło", state: "error" },
       5: { message: "Zalogowano pomyślnie", state: "success" },
+      6: { message: "Przywrócono sesję", state: "success" },
     };
 
     if (username === "" || password === "") {
@@ -38,9 +38,7 @@ const Login = () => {
       return;
     }
 
-    const response = await axios.get(
-      "http://127.0.0.1:5000/api/credentials",
-      {
+    const response = await axios.get("http://127.0.0.1:5000/api/credentials", {
         params: {
           username: username,
           password: password,
@@ -53,7 +51,7 @@ const Login = () => {
     if (info.state === "success") {
       const key = response.data.key;
 
-      return window.location.href = `/key=${key}`;
+      return window.location.href = `/dashboard/${key}`;
     }
 
     setAlertInfo(<AlertInfo state={info.state} info={info.message} />);
@@ -64,7 +62,7 @@ const Login = () => {
   };
 
   return (
-    <div className="container">
+    <div className="login">
       {alertInfo && <div className="container__alert">{alertInfo}</div>}
 
       <div className="box">
@@ -108,27 +106,6 @@ const Login = () => {
             }}
           />
 
-          <FormControlLabel
-            control={
-              <Checkbox
-                value="remember"
-                sx={{
-                  color: getGlobalStyle("--ui-text"),
-
-                  "&.Mui-checked": {
-                    color: getGlobalStyle("--theme"),
-                  },
-                }}
-              />
-            }
-            label="Zapamiętaj mnie"
-            style={{
-              marginTop: "15px",
-              color: getGlobalStyle("--ui-text"),
-              userSelect: "none"
-            }}
-          />
-
           <Button
             type="submit"
             fullWidth
@@ -137,7 +114,7 @@ const Login = () => {
               backgroundColor: getGlobalStyle("--theme"),
               fontFamily: "ui-regular",
               fontWeight: "600",
-              marginTop: "15px",
+              marginTop: "40px",
               marginBottom: "15px",
               color: getGlobalStyle("--ui")
             }}

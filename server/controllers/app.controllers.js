@@ -12,23 +12,40 @@ const pool = mysql.createPool({
   waitForConnections: true,
 });
 
+let currentKeys = [];
+
+exports.checkSession = (req, res) => {
+  res.set('Access-Control-Allow-Origin', '*');
+  
+  const queryKey = req.query.key;
+
+  let sessionFound = false;
+
+  for (const [username, [key, timestamp]] of Object.entries(currentKeys)) {
+    if (key === queryKey) {
+      sessionFound = true;
+      break;
+    }
+  }
+
+  res.json({
+    found: sessionFound
+  });
+}
+
 exports.checkCredentials = (req, res) => {
   res.set('Access-Control-Allow-Origin', '*');
 
   const { username, password } = req.query;
-
-  let currentKeys = [];
 
   const generateKey = (username) => {
     const key = uuidv4();
 
     currentKeys[username] = [key, Date.now()];
 
-    setTimeout(() => {
-      currentKeys[username] = null;
-    }, 120000);
-
-    console.log(currentKeys);
+    // setTimeout(() => {
+    //   delete currentKeys[username];
+    // }, 10000);
 
     return key;
   }
@@ -69,6 +86,16 @@ exports.checkCredentials = (req, res) => {
         res.json({
           status: 4,
           message: 'Nieprawidłowe hasło',
+        });
+
+        return;
+      }
+
+      if (currentKeys[username]) {
+        res.json({
+          status: 6,
+          message: 'Autoryzacja udana',
+          key: currentKeys[username][0],
         });
 
         return;
