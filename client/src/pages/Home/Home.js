@@ -1,19 +1,23 @@
 import "./Home.scss";
 
-// import { getGlobalStyle } from "../../utils/index";
-import SignalCellularAltRoundedIcon from '@mui/icons-material/SignalCellularAltRounded';
-import PeopleRoundedIcon from '@mui/icons-material/PeopleRounded';
-import LocalMallRoundedIcon from '@mui/icons-material/LocalMallRounded';
-import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
-
 import { ButtonBase } from "@mui/material";
 import { Spinner } from "../../components/Spinner/Spinner";
 import { useParams } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
 
+// import { getGlobalStyle } from "../../utils/index";
+import SignalCellularAltRoundedIcon from '@mui/icons-material/SignalCellularAltRounded';
+import PeopleRoundedIcon from '@mui/icons-material/PeopleRounded';
+import LocalMallRoundedIcon from '@mui/icons-material/LocalMallRounded';
+import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
+
+import { useSearchParams } from "react-router-dom";
+
 const Home = () => {
-	// let [showSpinner, setShowSpinner] = useState(true);
+	const [searchParams] = useSearchParams();
+  const params = Object.fromEntries([...searchParams]);
+
 	let [showSpinner, setShowSpinner] = useState(true);
 
 	const checkSession = async (key) => {
@@ -30,14 +34,14 @@ const Home = () => {
 		}
 	}
 
-	let { key } = useParams();
+	const key = params.key;
 
 	checkSession(key);
 
   return (
     <div className="home">
       <Spinner open={showSpinner} />
-			 
+			
 			<div className="sidebar">
 				<div className="sidebar__upper">
 					<div className="basic-info">

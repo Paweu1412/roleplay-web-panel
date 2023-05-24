@@ -1,3 +1,10 @@
+import "./Login.scss";
+
+import { getGlobalStyle } from "../../utils/index";
+import { AlertInfo } from "../../components/Alert/Alert";
+import axios from "axios";
+import { useState } from "react";
+
 import {
   TextField,
   Button,
@@ -5,13 +12,6 @@ import {
   FormControlLabel,
   Link,
 } from "@mui/material";
-
-import "./Login.scss";
-
-import { getGlobalStyle } from "../../utils/index";
-import { AlertInfo } from "../../components/Alert/Alert";
-import axios from "axios";
-import { useState } from "react";
 
 const Login = () => {
   const [alertInfo, setAlertInfo] = useState(null);
@@ -51,7 +51,7 @@ const Login = () => {
     if (info.state === "success") {
       const key = response.data.key;
 
-      return window.location.href = `/dashboard/${key}`;
+      return window.location.href = `/dashboard?key=${key}`;
     }
 
     setAlertInfo(<AlertInfo state={info.state} info={info.message} />);
