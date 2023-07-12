@@ -1,23 +1,33 @@
 .login {
-  height: 100vh;
-  width: 100vw;
+  height: 100%;
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   font-family: "ui-semibold";
+  
+  .container {
+    display: flex;
+    min-width: 100vw;
+    min-height: 100vh;
+    justify-content: center;
+    align-items: center;
 
-  .box {
-    width: 400px;
-    height: 400px;
-
-    &__header {
-      text-align: center;
-      font-size: 12px;
-    }
-
-    &__form__links {
-      display: flex;
-      justify-content: space-between;
+    .box {
+      width: 400px;
+      height: 400px;
+  
+      &__header {
+        text-align: center;
+        font-size: 12px;
+      }
+  
+      &__form__links {
+        display: flex;
+        justify-content: space-between;
+      }
     }
   }
+
+  
 }

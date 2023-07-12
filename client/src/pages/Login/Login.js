@@ -65,88 +65,90 @@ const Login = () => {
     <div className="login">
       {alertInfo && <div className="container__alert">{alertInfo}</div>}
 
-      <div className="box">
-        <div className="box__header">
-          <h1>Zaloguj się</h1>
-        </div>
+      <div className="container">
+        <div className="box">
+          <div className="box__header">
+            <h1>Zaloguj się</h1>
+          </div>
 
-        <div className="box__form">
-          <TextField
-            required
-            label="Nazwa użytkownika"
-            variant="outlined"
-            onPaste={(e) => {setUsername(e.target.value)}}
-            onChange={(e) => {setUsername(e.target.value)}}
-            style={{
-              width: "100%",
-              marginTop: "25px",
-            }}
-            inputProps={{
-              style: {
-                color: getGlobalStyle("--ui-text"),
-              },
-            }}
-          />
+          <div className="box__form">
+            <TextField
+              required
+              label="Nazwa użytkownika"
+              variant="outlined"
+              onPaste={(e) => {setUsername(e.target.value)}}
+              onChange={(e) => {setUsername(e.target.value)}}
+              style={{
+                width: "100%",
+                marginTop: "25px",
+              }}
+              inputProps={{
+                style: {
+                  color: getGlobalStyle("--ui-text"),
+                },
+              }}
+            />
 
-          <TextField
-            required
-            type="password"
-            label="Hasło"
-            variant="outlined"
-            onPaste={(e) => {setPassword(e.target.value)}}
-            onChange={(e) => {setPassword(e.target.value)}}
-            style={{
-              width: "100%",
-              marginTop: "25px",
-            }}
-            inputProps={{
-              style: {
-                color: getGlobalStyle("--ui-text"),
-              },
-            }}
-          />
+            <TextField
+              required
+              type="password"
+              label="Hasło"
+              variant="outlined"
+              onPaste={(e) => {setPassword(e.target.value)}}
+              onChange={(e) => {setPassword(e.target.value)}}
+              style={{
+                width: "100%",
+                marginTop: "25px",
+              }}
+              inputProps={{
+                style: {
+                  color: getGlobalStyle("--ui-text"),
+                },
+              }}
+            />
 
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            style={{
-              backgroundColor: getGlobalStyle("--theme"),
-              fontFamily: "ui-regular",
-              fontWeight: "600",
-              marginTop: "40px",
-              marginBottom: "15px",
-              color: getGlobalStyle("--ui")
-            }}
-            onClick={SubmitLogin}
-          >
-            Zaloguj się
-          </Button>
-
-          <div className="box__form__links">
-            <Link href="#" 
-              variant="body2" 
-              style={{ 
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              style={{
+                backgroundColor: getGlobalStyle("--theme"),
                 fontFamily: "ui-regular",
                 fontWeight: "600",
-                color: getGlobalStyle("--ui-text"),
-                textDecoration: "none"
+                marginTop: "40px",
+                marginBottom: "15px",
+                color: getGlobalStyle("--ui")
               }}
+              onClick={SubmitLogin}
             >
-              Zapomniałeś hasła?
-            </Link>
+              Zaloguj się
+            </Button>
 
-            <Link href="#" 
-              variant="body2" 
-              style={{ 
-                fontFamily: "ui-regular",
-                fontWeight: "600",
-                color: getGlobalStyle("--ui-text"),
-                textDecoration: "none"
-              }}
-            >
-              Nie masz konta?
-            </Link>
+            <div className="box__form__links">
+              <Link href="#" 
+                variant="body2" 
+                style={{ 
+                  fontFamily: "ui-regular",
+                  fontWeight: "600",
+                  color: getGlobalStyle("--ui-text"),
+                  textDecoration: "none"
+                }}
+              >
+                Zapomniałeś hasła?
+              </Link>
+
+              <Link href="#" 
+                variant="body2" 
+                style={{ 
+                  fontFamily: "ui-regular",
+                  fontWeight: "600",
+                  color: getGlobalStyle("--ui-text"),
+                  textDecoration: "none"
+                }}
+              >
+                Nie masz konta?
+              </Link>
+            </div>
           </div>
         </div>
       </div>
