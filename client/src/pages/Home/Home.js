@@ -6,10 +6,11 @@ import { useState } from "react";
 import axios from "axios";
 
 // import { getGlobalStyle } from "../../utils/index";
-import SignalCellularAltRoundedIcon from '@mui/icons-material/SignalCellularAltRounded';
-import PeopleRoundedIcon from '@mui/icons-material/PeopleRounded';
-import LocalMallRoundedIcon from '@mui/icons-material/LocalMallRounded';
+import PersonIcon from '@mui/icons-material/Person';
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
+import AccessibilityIcon from '@mui/icons-material/Accessibility';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 
 import { useSearchParams } from "react-router-dom";
 
@@ -18,6 +19,10 @@ const Home = () => {
   const params = Object.fromEntries([...searchParams]);
 
   let [showSpinner, setShowSpinner] = useState(true);
+  let [accountsNumber, setAccountsNumber] = useState(0);
+  let [charactersNumber, setCharactersNumber] = useState(0);
+  let [hoursNumber, setHoursNumber] = useState(0);
+  let [vehiclesNumber, setVehiclesNumber] = useState(0);
 
   const checkSession = async (key) => {
     const response = await axios.get("http://127.0.0.1:5000/api/session", {
@@ -36,6 +41,17 @@ const Home = () => {
   const key = params.key;
 
   checkSession(key);
+
+  const checkInformations = async () => {
+    const response = await axios.get("http://127.0.0.1:5000/api/informations", {});
+
+    setAccountsNumber(response.data.accountsNumber);
+    setCharactersNumber(response.data.charactersNumber);
+    setHoursNumber(response.data.hoursNumber);
+    setVehiclesNumber(response.data.vehiclesNumber);
+  }
+
+  checkInformations();
 
   return (
     <div className="home">
@@ -66,30 +82,30 @@ const Home = () => {
 
         <div className="container">
           <div className="item">
-            <PersonRoundedIcon className="icon" />
+            <PersonIcon className="icon" />
 
-            <p>0</p>
+            <p>{accountsNumber}</p>
             <span>KONT</span>
           </div>
 
           <div className="item">
-            <PersonRoundedIcon className="icon" />
+            <AccessibilityIcon className="icon" />
 
-            <p>0</p>
+            <p>{charactersNumber}</p>
             <span>POSTACI</span>
           </div>
 
           <div className="item">
-            <PersonRoundedIcon className="icon" />
+            <AccessTimeIcon className="icon" />
 
-            <p>0</p>
-            <span>GODZIN</span>
+            <p>{(hoursNumber / 100).toFixed()}</p>
+            <span>PRZEGRANYCH<br></br>GODZIN</span>
           </div>
 
           <div className="item">
-          <PersonRoundedIcon className="icon" />
+            <DirectionsCarIcon className="icon" />
 
-            <p>0</p>
+            <p>{vehiclesNumber}</p>
             <span>POJAZDÓW</span>
           </div>
         </div>

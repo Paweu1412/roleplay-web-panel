@@ -101,11 +101,13 @@
     align-items: center;
     background-color: var(--border);
     float: left;
-    min-height: 100vh;
+    min-height: 800px;
+    height: 100vh;
     width: calc(100% - 280px);
 
     h1 {
       transition: all 0.1s;
+      margin: 0;
 
       &:hover {
         transform: scale(1.1);
@@ -119,7 +121,7 @@
       justify-content: space-around;
       height: 500px;
       width: 800px;
-      margin-top: 80px;
+      margin-top: 50px;
 
      .item {
         display: flex;
@@ -132,6 +134,7 @@
         transition: all 0.05s;
 
         p {
+          margin: 10px;
           font-size: 25px;
         }
 

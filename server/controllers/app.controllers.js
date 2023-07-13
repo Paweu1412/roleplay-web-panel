@@ -33,6 +33,37 @@ exports.checkSession = (req, res) => {
   });
 }
 
+exports.checkInformations = async (req, res) => {
+  let accountsNumber = 0;
+  let charactersNumber = 0;
+  let hoursNumber = 0;
+  let vehiclesNumber = 0;
+
+  res.set('Access-Control-Allow-Origin', '*');
+
+  pool.query(`SELECT (SELECT COUNT(*) FROM accounts) AS accountsNumber, (SELECT COUNT(*) FROM characters) AS charactersNumber, (SELECT SUM(playtime) FROM characters) / 60 AS hoursNumber, (SELECT COUNT(*) FROM vehicles) AS vehiclesNumber`, (error, results) => {
+    if (error) {
+      console.error(error);
+      // obsłuż błąd zapytania
+      return;
+    }
+
+    const accountsNumber = results[0].accountsNumber;
+    const charactersNumber = results[0].charactersNumber;
+    const hoursNumber = results[0].hoursNumber;
+    const vehiclesNumber = results[0].vehiclesNumber;
+
+    res.json({
+      accountsNumber: accountsNumber,
+      charactersNumber: charactersNumber,
+      hoursNumber: hoursNumber,
+      vehiclesNumber: vehiclesNumber,
+    });
+
+    return;
+  });
+}
+
 exports.checkCredentials = (req, res) => {
   res.set('Access-Control-Allow-Origin', '*');
 
