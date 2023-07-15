@@ -50,8 +50,6 @@
     }
 
     &__main {
-      
-
       .buttons {
         display: flex;
         flex-direction: column;
@@ -132,6 +130,14 @@
         height: 250px;
         background-color: var(--border);
         transition: all 0.05s;
+
+        .icon-loading {
+          width: 25px;
+
+          path {
+            stroke: rgb(157, 164, 174);
+          }
+        }
 
         p {
           margin: 10px;

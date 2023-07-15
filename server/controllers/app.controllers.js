@@ -33,7 +33,7 @@ exports.checkSession = (req, res) => {
   });
 }
 
-exports.checkInformations = async (req, res) => {
+exports.checkInformations = (req, res) => {
   let accountsNumber = 0;
   let charactersNumber = 0;
   let hoursNumber = 0;
@@ -44,7 +44,6 @@ exports.checkInformations = async (req, res) => {
   pool.query(`SELECT (SELECT COUNT(*) FROM accounts) AS accountsNumber, (SELECT COUNT(*) FROM characters) AS charactersNumber, (SELECT SUM(playtime) FROM characters) / 60 AS hoursNumber, (SELECT COUNT(*) FROM vehicles) AS vehiclesNumber`, (error, results) => {
     if (error) {
       console.error(error);
-      // obsłuż błąd zapytania
       return;
     }
 
@@ -63,6 +62,46 @@ exports.checkInformations = async (req, res) => {
     return;
   });
 }
+
+exports.checkHome = (req, res) => {
+  res.set('Access-Control-Allow-Origin', '*');
+
+  let accountName = null;
+  let accountUID = 0;
+
+  const queryKey = req.query.key;
+
+  for (const [username, [key, timestamp]] of Object.entries(currentKeys)) {
+    if (key === queryKey) {
+      accountName = username;
+      break;
+    }
+  }
+
+  if (!accountName) {
+    res.json({
+      accountName: null,
+      accountUID: 0
+    });
+
+    return;
+  }
+
+  pool.query(`SELECT UID FROM accounts WHERE username = ?`, [accountName], (error, results) => {
+    if (error) {
+      console.error(error);
+      return;
+    }
+
+    accountUID = results[0].UID || 0;
+
+    res.json({
+      accountName: accountName,
+      accountUID: accountUID
+    });
+  });
+}
+
 
 exports.checkCredentials = (req, res) => {
   res.set('Access-Control-Allow-Origin', '*');

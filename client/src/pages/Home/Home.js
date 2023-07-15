@@ -12,6 +12,8 @@ import AccessibilityIcon from '@mui/icons-material/Accessibility';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 
+import { ThreeDots, TailSpin } from 'react-loading-icons'
+
 import { useSearchParams } from "react-router-dom";
 
 const Home = () => {
@@ -23,6 +25,8 @@ const Home = () => {
   let [charactersNumber, setCharactersNumber] = useState(0);
   let [hoursNumber, setHoursNumber] = useState(0);
   let [vehiclesNumber, setVehiclesNumber] = useState(0);
+  let [accountName, setAccountName] = useState("");
+  let [accountUID, setAccountUID] = useState(0);
 
   const checkSession = async (key) => {
     const response = await axios.get("http://127.0.0.1:5000/api/session", {
@@ -30,8 +34,6 @@ const Home = () => {
         key: key,
       },
     });
-
-    setShowSpinner(!response.data.found);
     
     if (response.data.found === false) {
       return window.location.href = "/";
@@ -42,16 +44,27 @@ const Home = () => {
 
   checkSession(key);
 
-  const checkInformations = async () => {
+  const checkInformations = async (key) => {
     const response = await axios.get("http://127.0.0.1:5000/api/informations", {});
+    const responseSecond = await axios.get("http://127.0.0.1:5000/api/home", {
+      params: {
+        key: key,
+      },
+    });
 
     setAccountsNumber(response.data.accountsNumber);
     setCharactersNumber(response.data.charactersNumber);
     setHoursNumber(response.data.hoursNumber);
     setVehiclesNumber(response.data.vehiclesNumber);
+    setAccountName(responseSecond.data.accountName);
+    setAccountUID(responseSecond.data.accountUID)
+
+    setTimeout(() => {
+      setShowSpinner(false);
+    }, 150);
   }
 
-  checkInformations();
+  checkInformations(key);
 
   return (
     <div className="home">
@@ -60,8 +73,25 @@ const Home = () => {
       <div className="sidebar">
         <div className="sidebar__upper">
           <div className="basic-info">
-            <h1>Cześć, Paweł!</h1>
-            <p>To jest testowy panel</p>
+            <h1>Cześć, {accountName === "" ? <ThreeDots 
+              style={{
+                position: "absolute",
+                top: "47px",
+                left: "100px",
+                width: "20px",
+                margin: "0"
+              }}
+            /> : `${accountName}!`}</h1>
+            <p>Twoje UID konta: {accountUID === 0 ? <ThreeDots 
+              fill="#9DA4AE"
+              style={{
+                position: "absolute",
+                top: "70px",
+                left: "165px",
+                width: "15px",
+                margin: "0",
+              }}
+            /> : accountUID}</p>
           </div>
         </div>
 
@@ -84,28 +114,28 @@ const Home = () => {
           <div className="item">
             <PersonIcon className="icon" />
 
-            <p>{accountsNumber}</p>
+            <p>{accountsNumber === 0 ? <TailSpin /> : accountsNumber}</p>
             <span>KONT</span>
           </div>
 
           <div className="item">
             <AccessibilityIcon className="icon" />
 
-            <p>{charactersNumber}</p>
+            <p>{charactersNumber === 0 ? <TailSpin /> : charactersNumber}</p>
             <span>POSTACI</span>
           </div>
 
           <div className="item">
             <AccessTimeIcon className="icon" />
 
-            <p>{(hoursNumber / 100).toFixed()}</p>
+            <p>{hoursNumber === 0 ? <TailSpin /> : (hoursNumber / 100).toFixed()}</p>
             <span>PRZEGRANYCH<br></br>GODZIN</span>
           </div>
 
           <div className="item">
             <DirectionsCarIcon className="icon" />
 
-            <p>{vehiclesNumber}</p>
+            <p>{vehiclesNumber === 0 ? <TailSpin /> : vehiclesNumber}</p>
             <span>POJAZDÓW</span>
           </div>
         </div>
