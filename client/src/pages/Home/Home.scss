@@ -4,11 +4,15 @@
   height: 100%;
   font-family: "ui-regular";
 
+  .particles {
+    position: fixed;
+    z-index: -1;
+  }
+
   .sidebar {
     background-color: var(--ui);
-    // border-right: 2px solid var(--theme);
     float: left;
-    width: 280px;
+    width: 250px;
     min-height: 100vh;
 
     &__upper {
@@ -22,7 +26,7 @@
       .basic-info {
         color: white;
         display: flex;
-        width: 200px;
+        width: 75%;
         height: 50px;
         background-color: var(--border);
         border-radius: 10px;
@@ -70,6 +74,10 @@
           text-align: left;
           width: 100%;
 
+          span {
+            font-family: "ui-regular";
+          }
+
           &:hover {
             background-color: rgba(255, 255, 255, 0.04);
           }
@@ -101,7 +109,7 @@
     float: left;
     min-height: 800px;
     height: 100vh;
-    width: calc(100% - 280px);
+    width: calc(100% - 250px);
 
     h1 {
       transition: all 0.1s;
