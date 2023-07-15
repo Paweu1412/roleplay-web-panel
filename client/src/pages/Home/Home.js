@@ -2,7 +2,8 @@ import "./Home.scss";
 
 import { ButtonBase } from "@mui/material";
 import { Spinner } from "../../components/Spinner/Spinner";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import axios from "axios";
 
 // import { getGlobalStyle } from "../../utils/index";
@@ -12,16 +13,14 @@ import AccessibilityIcon from '@mui/icons-material/Accessibility';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 
-import Particles from 'react-tsparticles'
-import { loadFull } from "tsparticles";
+import { ParticlesComponent as Particles } from "../../components/Particles/Particles";
 
 import { ThreeDots, TailSpin } from 'react-loading-icons'
-
-import { useSearchParams } from "react-router-dom";
 
 const Home = () => {
   const [searchParams] = useSearchParams();
   const params = Object.fromEntries([...searchParams]);
+  const key = params.key;
 
   let [showSpinner, setShowSpinner] = useState(true);
   let [accountsNumber, setAccountsNumber] = useState(0);
@@ -31,137 +30,55 @@ const Home = () => {
   let [accountName, setAccountName] = useState("");
   let [accountUID, setAccountUID] = useState(0);
 
-  const checkSession = async (key) => {
-    const response = await axios.get("http://127.0.0.1:5000/api/session", {
-      params: {
-        key: key,
-      },
-    });
-    
-    if (response.data.found === false) {
-      return window.location.href = "/";
+  useEffect(() => {
+    const checkSession = async (key) => {
+      try {
+        const response = await axios.get("http://127.0.0.1:5000/api/session", {
+          params: {
+            key: key,
+          },
+        });
+        if (response.data.found === false) {
+          window.location.href = "/";
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    const checkInformations = async (key) => {
+      try {
+        const response = await axios.get("http://127.0.0.1:5000/api/informations", {});
+        const responseSecond = await axios.get("http://127.0.0.1:5000/api/home", {
+          params: {
+            key: key,
+          },
+        });
+
+        setAccountsNumber(response.data.accountsNumber);
+        setCharactersNumber(response.data.charactersNumber);
+        setHoursNumber(response.data.hoursNumber);
+        setVehiclesNumber(response.data.vehiclesNumber);
+        setAccountName(responseSecond.data.accountName);
+        setAccountUID(responseSecond.data.accountUID);
+
+        setShowSpinner(false);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    if (key) {
+      checkSession(key);
+      checkInformations(key);
+    } else {
+      window.location.href = "/";
     }
-  }
-
-  const key = params.key;
-
-  checkSession(key);
-
-  const checkInformations = async (key) => {
-    const response = await axios.get("http://127.0.0.1:5000/api/informations", {});
-    const responseSecond = await axios.get("http://127.0.0.1:5000/api/home", {
-      params: {
-        key: key,
-      },
-    });
-
-    setAccountsNumber(response.data.accountsNumber);
-    setCharactersNumber(response.data.charactersNumber);
-    setHoursNumber(response.data.hoursNumber);
-    setVehiclesNumber(response.data.vehiclesNumber);
-    setAccountName(responseSecond.data.accountName);
-    setAccountUID(responseSecond.data.accountUID)
-
-    setTimeout(() => {
-      setShowSpinner(false);
-    }, 50);
-  }
-
-  checkInformations(key);
-
-  const particlesInit = async (main) => {
-    await loadFull(main);
-  };
+  }, [key]);
 
   return (
     <div className="home">
-      <Particles
-        className="particles"
-        id="tsparticles"
-        init={particlesInit}
-        options={{
-          background: {
-            color: 'transparent',
-          },
-          fpsLimit: 60,
-          interactivity: {
-            detectsOn: 'canvas',
-            events: {
-              resize: false
-            },
-          },
-          "particles": {
-            "number": {
-              "value": 40,
-              "density": {
-                "enable": true,
-                "value_area": 400
-              }
-            },
-            "color": {
-              "value": "#ffffff"
-            },
-            "shape": {
-              "type": "circle",
-              "stroke": {
-                "width": 0,
-                "color": "#000000"
-              },
-              "polygon": {
-                "nb_sides": 5
-              },
-              "image": {
-                "src": "img/github.svg",
-                "width": 100,
-                "height": 100
-              }
-            },
-            "opacity": {
-              "value": 0.5,
-              "random": false,
-              "anim": {
-                "enable": false,
-                "speed": 1,
-                "opacity_min": 0.1,
-                "sync": false
-              }
-            },
-            "size": {
-              "value": 1,
-              "random": true,
-              "anim": {
-                "enable": false,
-                "speed": 10,
-                "size_min": 0.1,
-                "sync": false
-              }
-            },
-            "line_linked": {
-              "enable": true,
-              "distance": 200,
-              "color": "#ffffff",
-              "opacity": 0.05,
-              "width": 1
-            },
-            "move": {
-              "enable": true,
-              "speed": 1,
-              "direction": "none",
-              "random": false,
-              "straight": false,
-              "out_mode": "out",
-              "bounce": false,
-              "attract": {
-                "enable": false,
-                "rotateX": 600,
-                "rotateY": 1200
-              }
-            }
-          },
-          "retina_detect": true
-        }}
-      />  
-
+      <Particles />
       <Spinner open={showSpinner} />
       
       <div className="sidebar">
