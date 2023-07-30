@@ -1,31 +1,23 @@
-import "./Home.scss";
+import "./Groups.scss";
 
 import { ButtonBase } from "@mui/material";
-import { Spinner } from "../../components/Spinner/Spinner";
+import { Spinner } from "../../../components/Spinner/Spinner";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 
 // import { getGlobalStyle } from "../../utils/index";
-import PersonIcon from '@mui/icons-material/Person';
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
-import AccessibilityIcon from '@mui/icons-material/Accessibility';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import GroupIcon from '@mui/icons-material/Group';
 
-import { ParticlesComponent as Particles } from "../../components/Particles/Particles";
+import { ParticlesComponent as Particles } from "../../../components/Particles/Particles";
 
-import { ThreeDots, TailSpin } from 'react-loading-icons'
+import { ThreeDots } from 'react-loading-icons'
 
-const Home = () => {
+const Groups = () => {
   const { key } = useParams();
 
   let [showSpinner, setShowSpinner] = useState(true);
-  let [accountsNumber, setAccountsNumber] = useState(0);
-  let [charactersNumber, setCharactersNumber] = useState(0);
-  let [hoursNumber, setHoursNumber] = useState(0);
-  let [vehiclesNumber, setVehiclesNumber] = useState(0);
   let [accountName, setAccountName] = useState("");
   let [accountUID, setAccountUID] = useState(0);
 
@@ -47,17 +39,12 @@ const Home = () => {
 
     const checkInformations = async (key) => {
       try {
-        const response = await axios.get(`http://${window.location.hostname}:5000/api/informations`, {});
         const responseSecond = await axios.get(`http://${window.location.hostname}:5000/api/home`, {
           params: {
             key: key,
           },
         });
 
-        setAccountsNumber(response.data.accountsNumber);
-        setCharactersNumber(response.data.charactersNumber);
-        setHoursNumber(response.data.hoursNumber);
-        setVehiclesNumber(response.data.vehiclesNumber);
         setAccountName(responseSecond.data.accountName);
         setAccountUID(responseSecond.data.accountUID);
 
@@ -76,7 +63,7 @@ const Home = () => {
   }, [key]);
 
   return (
-    <div className="home">
+    <div className="account">
       <Particles />
       <Spinner open={showSpinner} />
       
@@ -117,9 +104,7 @@ const Home = () => {
             </li>
 
             <li>
-              <ButtonBase className="button" onClick={() => {
-                window.location.href = `/dashboard/${key}/groups`;
-              }}>
+              <ButtonBase className="button active" onClick={() => {}}>
                 <GroupIcon className="icon" />
                 <span className="description">Grupy</span>
               </ButtonBase>
@@ -129,40 +114,9 @@ const Home = () => {
       </div>
 
       <div className="main">
-        <h1>Czy wiesz, że na serwerze jest już w sumie...</h1>
-
-        <div className="container">
-          <div className="item">
-            <PersonIcon className="icon" />
-
-            <p>{accountsNumber === 0 ? <TailSpin /> : accountsNumber}</p>
-            <span>KONT</span>
-          </div>
-
-          <div className="item">
-            <AccessibilityIcon className="icon" />
-
-            <p>{charactersNumber === 0 ? <TailSpin /> : charactersNumber}</p>
-            <span>POSTACI</span>
-          </div>
-
-          <div className="item">
-            <AccessTimeIcon className="icon" />
-
-            <p>{hoursNumber === 0 ? <TailSpin /> : (hoursNumber / 100).toFixed()}</p>
-            <span>PRZEGRANYCH<br></br>GODZIN</span>
-          </div>
-
-          <div className="item">
-            <DirectionsCarIcon className="icon" />
-
-            <p>{vehiclesNumber === 0 ? <TailSpin /> : vehiclesNumber}</p>
-            <span>POJAZDÓW</span>
-          </div>
-        </div>
       </div>
     </div>
   );
 };
 
-export default Home;
+export default Groups;

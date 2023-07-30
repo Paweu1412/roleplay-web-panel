@@ -14,6 +14,40 @@ const pool = mysql.createPool({
 
 let currentKeys = [];
 
+const isSessionActive = (queryKey) => {
+  for (const [username, [key, timestamp]] of Object.entries(currentKeys)) {
+    if (key === queryKey) {
+      return true;
+    }
+  }
+  return false;
+};
+
+const dbQuery = (query, params, key, callback) => {
+  const queryKey = key;
+
+  if (key !== false) {
+    if (!isSessionActive(queryKey)) {
+      return callback({
+        status: 1,
+        message: 'Sesja wygasła lub nieaktywna',
+      });
+    }
+  }
+  
+  pool.query(query, params, (error, results) => {
+    if (error) {
+      console.error(error);
+      return callback({
+        status: 2,
+        message: 'Błąd serwera',
+      });
+    }
+
+    callback(null, results);
+  });
+};
+
 exports.checkSession = (req, res) => {
   res.set('Access-Control-Allow-Origin', '*');
   
@@ -41,7 +75,7 @@ exports.checkInformations = (req, res) => {
 
   res.set('Access-Control-Allow-Origin', '*');
 
-  pool.query(`SELECT (SELECT COUNT(*) FROM accounts) AS accountsNumber, (SELECT COUNT(*) FROM characters) AS charactersNumber, (SELECT SUM(playtime) FROM characters) / 60 AS hoursNumber, (SELECT COUNT(*) FROM vehicles) AS vehiclesNumber`, (error, results) => {
+  dbQuery(`SELECT (SELECT COUNT(*) FROM accounts) AS accountsNumber, (SELECT COUNT(*) FROM characters) AS charactersNumber, (SELECT SUM(playtime) FROM characters) / 60 AS hoursNumber, (SELECT COUNT(*) FROM vehicles) AS vehiclesNumber`, {}, false, (error, results) => {
     if (error) {
       console.error(error);
       return;
@@ -87,7 +121,7 @@ exports.checkHome = (req, res) => {
     return;
   }
 
-  pool.query(`SELECT UID FROM accounts WHERE username = ?`, [accountName], (error, results) => {
+  dbQuery(`SELECT UID FROM accounts WHERE username = ?`, [accountName], queryKey, (error, results) => {
     if (error) {
       console.error(error);
       return;
@@ -120,7 +154,7 @@ exports.checkCredentials = (req, res) => {
     return key;
   }
 
-  pool.query('SELECT * FROM accounts WHERE username = ?', [username], (error, results) => {
+  dbQuery('SELECT * FROM accounts WHERE username = ?', [username], false, (error, results) => {
     if (error) {
       console.error(error);
 

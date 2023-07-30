@@ -8,8 +8,6 @@ import { useState } from "react";
 import {
   TextField,
   Button,
-  Checkbox,
-  FormControlLabel,
   Link,
 } from "@mui/material";
 
@@ -38,7 +36,7 @@ const Login = () => {
       return;
     }
 
-    const response = await axios.get("http://127.0.0.1:5000/api/credentials", {
+    const response = await axios.get(`http://${window.location.hostname}:5000/api/credentials`, {
         params: {
           username: username,
           password: password,
@@ -51,7 +49,7 @@ const Login = () => {
     if (info.state === "success") {
       const key = response.data.key;
 
-      return window.location.href = `/dashboard?key=${key}`;
+      return window.location.href = `/dashboard/${key}`;
     }
 
     setAlertInfo(<AlertInfo state={info.state} info={info.message} />);
