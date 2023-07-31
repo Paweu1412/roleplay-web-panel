@@ -1,18 +1,22 @@
 import "./Groups.scss";
 
-import { ButtonBase } from "@mui/material";
+import { ButtonBase, Alert } from "@mui/material";
 import { Spinner } from "../../../components/Spinner/Spinner";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 
-// import { getGlobalStyle } from "../../utils/index";
+import badge from "../../../assets/images/badge.png";
+import briefcase from "../../../assets/images/briefcase.png";
+import family from "../../../assets/images/family.png";
+
+import { getGlobalStyle } from "../../../utils/index";
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
 import GroupIcon from '@mui/icons-material/Group';
 
 import { ParticlesComponent as Particles } from "../../../components/Particles/Particles";
 
-import { ThreeDots } from 'react-loading-icons'
+import { ThreeDots } from 'react-loading-icons';
 
 const Groups = () => {
   const { key } = useParams();
@@ -114,6 +118,20 @@ const Groups = () => {
       </div>
 
       <div className="main">
+        <div className="container">
+          <div className="container__upper">
+            <img src={badge} alt="badge" style={{ marginRight: '60px' }} />
+            <img src={briefcase} alt="briefcase" />
+            <img src={family} alt="family" style={{ marginLeft: '60px' }}/>
+          </div>
+
+          <div className="container__lower">
+            <div className="alert">
+              <Alert variant="filled" severity="info" style={{ backgroundColor: getGlobalStyle('--ui') }}>Wybierz grupę, do której panelu chcesz przejść.</Alert>
+            </div>
+            
+          </div>
+        </div>
       </div>
     </div>
   );
